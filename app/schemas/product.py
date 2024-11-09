@@ -1,9 +1,8 @@
-# app/schemas/product.py
 from pydantic import BaseModel
 from typing import Optional
 
 class ProductSchema(BaseModel):
-    id: Optional[str]  # MongoDB's ObjectId is a string
+    id: Optional[str]  # Change id type to str to match MongoDB's ObjectId
     name: str
     image: str
     price: float
