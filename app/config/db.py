@@ -1,14 +1,13 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
-load_dotenv()
+# MongoDB client initialization
+client: AsyncIOMotorClient = None
 
-# Get MongoDB URL and Database name from environment variables
-MONGODB_URL = os.getenv("MONGODB_URL")
-DB_NAME = os.getenv("DB_NAME")
+def init_db():
+    global client
+    client = AsyncIOMotorClient(os.getenv("MONGO_URI"))
+    # Set the default database name
+    return client.get_database('your_database_name')  # Replace 'your_database_name' with your actual database name
 
-# Create a client and get the database
-client = AsyncIOMotorClient(MONGODB_URL)
-db = client[DB_NAME]
+db = init_db()

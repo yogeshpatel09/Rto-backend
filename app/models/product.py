@@ -1,16 +1,15 @@
-# app/schemas/product.py
 from pydantic import BaseModel
 from typing import Optional
 
-class ProductSchema(BaseModel):
-    id: Optional[int] = None
-    name: str
-    image: str
-    price: float
-    offer: Optional[float] = None
-    hide_price: bool = False
-    add_to_cart: bool = False
-    category: str
+class Product(BaseModel):
+    id: Optional[str]  # Optional ID
+    name: str           # Required field
+    image: str          # Required field
+    price: float        # Required field
+    offer: Optional[float] = None  # Optional field
+    hide_price: bool = False  # Default value
+    add_to_cart: bool = False  # Default value
+    category: str       # Required field
 
-class Config:
-    from_attributes = True
+    class Config:
+        orm_mode = True  # Ensure Pydantic can work with MongoDB models

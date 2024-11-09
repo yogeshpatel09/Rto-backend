@@ -1,9 +1,7 @@
-# app/schemas/product.py
 from pydantic import BaseModel
 from typing import Optional
 
-class ProductSchema(BaseModel):
-    id: Optional[str]  # MongoDB's ObjectId is a string
+class ProductCreate(BaseModel):
     name: str
     image: str
     price: float
@@ -12,5 +10,5 @@ class ProductSchema(BaseModel):
     add_to_cart: bool = False
     category: str
 
-    class Config:
-        orm_mode = True
+class ProductResponse(ProductCreate):
+    id: str
