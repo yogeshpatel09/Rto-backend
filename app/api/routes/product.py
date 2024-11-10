@@ -44,15 +44,25 @@ async def read_product(product_id: str):
         print(f"Error reading product with ID {product_id}: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
-# Get all products with pagination
 @router.get("/get_all_product", response_model=List[ProductSchema])
 async def read_products(skip: int = 0, limit: int = 10):
     try:
+        # Fetch products from the database
         products = await product_collection.find().skip(skip).limit(limit).to_list(length=limit)
+
+        # Ensure all products have a valid 'category' field
+        for product in products:
+            if not isinstance(product.get('category', ''), str):  # Check if 'category' is a string
+                product['category'] = "Unknown"  # Provide a default value if 'category' is invalid
+
+        # Return the processed products
         return [{**product, "id": str(product["_id"])} for product in products]
+    
     except Exception as e:
         print(f"Error reading products: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
 
 # Update a product by its ID
 @router.put("/update_product/{product_id}", response_model=ProductSchema)
